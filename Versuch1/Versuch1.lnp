@@ -1,0 +1,8 @@
+--cpu Cortex-M0
+".\main.o"
+".\system_lpc11xx.o"
+".\startup_lpc11xx.o"
+--strict --scatter ".\Versuch1.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Versuch1.map" -o .\Versuch1.axf
