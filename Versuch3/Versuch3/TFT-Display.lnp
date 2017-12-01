@@ -1,0 +1,9 @@
+--cpu Cortex-M0
+".\main.o"
+".\system_lpc11xx.o"
+".\startup_lpc11xx.o"
+".\spi.o"
+--strict --scatter ".\TFT-Display.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\TFT-Display.map" -o .\TFT-Display.axf
