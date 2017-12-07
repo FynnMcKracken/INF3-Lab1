@@ -165,6 +165,7 @@ void TIMER32_0_IRQHandler(void){
 		if(c>10) { //If counter big enough turn on next LED
 			if(oY < 84) {
 				drawRect2(++oY);
+				c = 0;
 			}	
 		}
 		c = 0;
@@ -174,7 +175,8 @@ void TIMER32_0_IRQHandler(void){
 	}	else { //Button released
 		if(c2>10) { //If counter big enough turn on next LED
 			if(oY > 0) {
-				drawRect2(--oY);	
+				drawRect2(--oY);
+				c = 0;	
 			}
 		}
 		c2 = 0;
