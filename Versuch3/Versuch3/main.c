@@ -39,7 +39,7 @@ void SendCommandSeq(const unsigned short * data, int Anzahl){
 
 /* ----------------------------------------------------------------
    Initialisierung des TFT-Displays fuer den 65536-Farben Modus
-   entsprechend der in der Vorlesung beschriebenen Schritte einschließlich
+   entsprechend der in der Vorlesung beschriebenen Schritte einschlieï¿½lich
    der Uebertragung der Initialisierungs-Kommandos.
    Zur Ueberwachung der Zeitabstaende wird die Funktion Waitms verwendet.
    Zum senden eines Kommandos an das Display wird die Funktion SendCommand
@@ -93,7 +93,7 @@ void InitButtons(void) {
 	NVIC->ISER[0] |= 0x40000; // Set exception for TMR32B0 (Exception 18)
 }
 
-void drawRect2(int oy) {
+void drawRect(int oy) {
 	int i;
 	short y1, y2;
 	unsigned short data[] = {
@@ -117,22 +117,6 @@ void drawRect2(int oy) {
 
 }
 
-void drawRect(int x, int y, int ox, int oy) {
-	int i;
-	int j;
-	for(i=0; i<176; i++) {
-		for(j=0; j<132; j++) {
-			if(i>y+oy && i<=y+10+oy && j>x+ox && j<=x+10+ox) {
-				SPISend8Bit(0xF8);
-				SPISend8Bit(0x00);
-			} else {
-				SPISend8Bit(0xFF);
-				SPISend8Bit(0xE0);
-			}
-		}	
-	}	
-}
-
 int main() {
 	int i = 0;
 	const unsigned short data[] = {
@@ -147,7 +131,7 @@ int main() {
 	 LPC_GPIO1->DIR |= 0x80;		//PIO1_7 als Reset, digitaler Ausgang
 	
    //Timer32B0 initialisieren. Er liefert die Zeitbasis fuer die Funktion waitms
-   LPC_TMR32B0->PR  = 48000; 	//bei P-Clock 48Mhz ergibt sich 1Khz Timer Auflösung
+   LPC_TMR32B0->PR  = 48000; 	//bei P-Clock 48Mhz ergibt sich 1Khz Timer Auflï¿½sung
    LPC_TMR32B0->TCR = 0x02;  	//setzt Timer zurueck und haelt ihn an
    LPC_TMR32B0->TCR = 0x01;  	//startet Timer
 
@@ -162,7 +146,7 @@ int main() {
 			SPISend8Bit(0xFF);
 			SPISend8Bit(0xE0);
 	 }
-	 drawRect2(0);
+	 drawRect(0);
 	 InitButtons();
 	
    while (1) {;} 	//Endlosschleife
@@ -178,18 +162,20 @@ void TIMER32_0_IRQHandler(void){
 	if(!(btn)) { //If button pressed increment counter
 		c++;
 	}	else { //Button released
-		if(c>10) { //If counter big enough turn on next LED 
-			oY++;
-			drawRect2(oY);
+		if(c>10) { //If counter big enough turn on next LED
+			if(oY < 84) {
+				drawRect2(++oY);
+			}	
 		}
 		c = 0;
 	}
 	if(!(btn2)) { //If button pressed increment counter
 		c2++;
 	}	else { //Button released
-		if(c2>10) { //If counter big enough turn on next LED 
-			oY--;
-			drawRect2(oY);
+		if(c2>10) { //If counter big enough turn on next LED
+			if(oY > 0) {
+				drawRect2(--oY);	
+			}
 		}
 		c2 = 0;
 	}
