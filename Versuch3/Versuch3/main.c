@@ -176,7 +176,7 @@ void TIMER32_0_IRQHandler(void){
 		if(c2>10) { //If counter big enough turn on next LED
 			if(oY > 0) {
 				drawRect2(--oY);
-				c = 0;	
+				c2 = 0;	
 			}
 		}
 		c2 = 0;
